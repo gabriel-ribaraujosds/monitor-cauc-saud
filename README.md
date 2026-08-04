@@ -45,9 +45,9 @@ O repositório já traz `.github/workflows/publicar.yml`, que faz tudo sozinho:
 3. registra a base no repositório quando ela muda;
 4. publica o site no GitHub Pages.
 
-Ele roda **todo dia às 12h30 UTC (09h30 em Brasília)**, a cada alteração no
-código e sob demanda pela aba *Actions*. Para criar o repositório e ligar a
-publicação:
+Ele roda **todo dia às 08h20 (horário de Brasília)**, com uma segunda execução
+às 09h30 como rede de segurança, além de rodar a cada alteração no código e sob
+demanda pela aba *Actions*. Para criar o repositório e ligar a publicação:
 
 ```bash
 git remote add origin https://github.com/SEU-USUARIO/monitor-cauc-saude.git
@@ -57,9 +57,11 @@ git push -u origin main
 O repositório precisa ser **público** para o GitHub Pages gratuito. O endereço
 final é `https://SEU-USUARIO.github.io/monitor-cauc-saude/`.
 
-O horário do agendamento acompanha a gravação do arquivo no Tesouro, que ocorre
-por volta das 11h10 UTC. Para mudar, edite o `cron` no workflow — o valor está
-sempre em UTC.
+O horário acompanha a gravação do arquivo no Tesouro, que ocorre por volta das
+11h10 UTC (08h10 em Brasília). Agendar antes disso faz o painel publicar a
+posição da véspera. Para mudar, edite o `cron` no workflow — o valor está
+sempre em UTC, e o GitHub pode atrasar execuções agendadas em alguns minutos
+nos horários de pico.
 
 > O GitHub desativa agendamentos em repositórios sem atividade por 60 dias. Como
 > o workflow registra a base sempre que ela muda (o que ocorre semanalmente), o

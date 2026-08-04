@@ -1,9 +1,14 @@
 name: Atualizar base do CAUC e publicar
 
 on:
-  # O CSV do Tesouro é gravado por volta das 11h10 UTC (08h10 em Brasília).
-  # A execução diária às 12h30 UTC (09h30) pega a divulgação do dia.
   schedule:
+    # O Tesouro grava o CSV por volta das 11h10 UTC — 08h10 em Brasília
+    # (medido em 03/08 às 11:10:03 e em 04/08 às 11:11:02). Rodar às 08h00
+    # buscaria o arquivo antes da divulgação e publicaria a posição da véspera,
+    # então a execução principal fica às 11h20 UTC = 08h20 em Brasília.
+    - cron: "20 11 * * *"
+    # Rede de segurança: se a divulgação atrasar, esta execução às 12h30 UTC
+    # (09h30 em Brasília) ainda captura a posição do dia.
     - cron: "30 12 * * *"
   # Publica também a cada alteração no código do site.
   push:
