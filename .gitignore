@@ -1,0 +1,7 @@
+# Gerado por gerar-versao-unica.mjs a cada publicação
+monitor-cauc-saude.html
+
+# Diretório montado pelo workflow de publicação
+site/
+
+node_modules/

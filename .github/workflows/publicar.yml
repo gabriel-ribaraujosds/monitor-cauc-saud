@@ -1,0 +1,72 @@
+name: Atualizar base do CAUC e publicar
+
+on:
+  # O CSV do Tesouro é gravado por volta das 11h10 UTC (08h10 em Brasília).
+  # A execução diária às 12h30 UTC (09h30) pega a divulgação do dia.
+  schedule:
+    - cron: "30 12 * * *"
+  # Publica também a cada alteração no código do site.
+  push:
+    branches: [main]
+  # Permite disparar manualmente pela aba Actions.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Baixar a posição mais recente do CAUC
+        run: node atualizar-dados.mjs
+
+      - name: Gerar a versão de arquivo único
+        run: node gerar-versao-unica.mjs
+
+      # Guardar a base no repositório serve a dois propósitos: se o Tesouro
+      # estiver fora do ar em alguma execução, o site continua publicando a
+      # última posição conhecida; e o repositório se mantém ativo, evitando que
+      # o GitHub desative o agendamento por inatividade.
+      - name: Registrar a base no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dados-cauc.js
+          if git diff --staged --quiet; then
+            echo "Base inalterada — nada a registrar."
+          else
+            git commit -m "Atualiza a base do CAUC ($(date -u '+%Y-%m-%d'))"
+            git push
+          fi
+
+      - name: Montar o diretório de publicação
+        run: |
+          mkdir -p site
+          cp index.html dados-cauc.js monitor-cauc-saude.html site/
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: publicacao
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="claro">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monitor CAUC Saúde</title>
+<meta name="description" content="Consulta pública da posição atual dos requisitos do CAUC, com destaque para o item 3.2.4 (Anexo 12 do RREO ao Siops) e o item 5.2 (aplicação mínima em saúde)." />
+<style>
+  /* ===================================================================
+     Design system institucional — azul e branco
+     =================================================================== */
+  :root {
+    --azul-900: #0b3b6f;
+    --azul-800: #14508c;
+    --azul-700: #1a5fa8;
+    --azul-600: #1351b4;
+    --azul-200: #a9c8ea;
+    --azul-100: #dce9f7;
+    --azul-50:  #eef4fb;
+
+    --superficie: #ffffff;
+    --fundo: #f4f7fa;
+    --fundo-sutil: #eef2f6;
+    --borda: #e2e8f0;
+    --borda-forte: #cbd5e1;
+
+    --texto: #16202e;
+    --texto-medio: #475569;
+    --texto-fraco: #64748b;
+
+    --alerta: #b42318;
+    --alerta-fundo: #fef3f2;
+    --alerta-borda: #fecdca;
+    --atencao: #b54708;
+    --atencao-fundo: #fffaeb;
+    --atencao-borda: #fedf89;
+    --regular: #067647;
+    --regular-fundo: #ecfdf3;
+    --regular-borda: #abefc6;
+    --neutro: #64748b;
+    --neutro-fundo: #f1f5f9;
+    --neutro-borda: #e2e8f0;
+
+    --topo: var(--azul-800);
+    --topo-texto: #ffffff;
+    --topo-texto-fraco: #c7dcf2;
+
+    --sombra: 0 1px 2px rgba(16, 24, 40, .06);
+    --sombra-md: 0 4px 12px rgba(16, 24, 40, .08);
+    --sombra-lg: 0 16px 40px rgba(16, 24, 40, .18);
+    --raio: 10px;
+    --raio-sm: 8px;
+    --largura: 1440px;
+    --fonte: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  html:is([data-tema="escuro"], [data-theme="dark"]) {
+    --superficie: #131d2b;
+    --fundo: #0c141f;
+    --fundo-sutil: #1b2736;
+    --borda: #24344a;
+    --borda-forte: #33465f;
+
+    --texto: #e8eef6;
+    --texto-medio: #a9bacd;
+    --texto-fraco: #8ba0b8;
+
+    --alerta: #fda29b;
+    --alerta-fundo: #2c1513;
+    --alerta-borda: #5b241f;
+    --atencao: #fec84b;
+    --atencao-fundo: #2b1e0b;
+    --atencao-borda: #5a3d10;
+    --regular: #75e0a7;
+    --regular-fundo: #0c2419;
+    --regular-borda: #17452f;
+    --neutro: #a9bacd;
+    --neutro-fundo: #1b2736;
+    --neutro-borda: #24344a;
+
+    --azul-100: #17304d;
+    --azul-200: #2d5a8c;
+    --azul-50:  #142943;
+    --azul-700: #3b82c4;
+
+    --topo: #0b2a4a;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4);
+    --sombra-md: 0 4px 14px rgba(0, 0, 0, .45);
+    --sombra-lg: 0 16px 40px rgba(0, 0, 0, .6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: var(--fonte);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { margin: 0; line-height: 1.3; }
+  button { font-family: inherit; }
+
+  .container {
+    width: 100%;
+    max-width: var(--largura);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---------- Barra institucional ---------- */
+  .topo {
+    background: var(--topo);
+    color: var(--topo-texto);
+    box-shadow: var(--sombra);
+  }
+  .topo__interno {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .topo__marca { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .topo__icone { flex: none; color: #fff; opacity: .95; }
+  .topo__titulo { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .topo__subtitulo { font-size: 12.5px; color: var(--topo-texto-fraco); }
+  .topo__acoes { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .topo__botao {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: var(--raio-sm);
+    background: transparent; color: #fff; border: 1px solid transparent;
+    cursor: pointer; transition: background .15s, border-color .15s;
+  }
+  .topo__botao:hover { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .25); }
+  .topo__botao:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  html:is([data-tema="claro"], [data-theme="light"]) .icone-sol { display: none; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .icone-lua { display: none; }
+
+  /* ---------- Cartões ---------- */
+  .cartao {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+  }
+
+  main { padding: 28px 0 48px; }
+  .secao { margin-top: 28px; }
+  .secao__cabecalho { margin-bottom: 12px; }
+  .secao__olho {
+    font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--azul-700);
+  }
+  .secao__titulo { font-size: 19px; font-weight: 700; margin-top: 2px; }
+  .secao__apoio { font-size: 13.5px; color: var(--texto-fraco); margin-top: 3px; }
+
+  /* ---------- Cartão de filtros ---------- */
+  .filtros { padding: 18px 20px 20px; }
+  .filtros__topo {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--borda);
+  }
+  .segmentado {
+    display: inline-flex; padding: 3px; gap: 3px;
+    background: var(--fundo-sutil); border: 1px solid var(--borda); border-radius: var(--raio-sm);
+  }
+  .segmentado button {
+    border: 0; background: transparent; color: var(--texto-medio);
+    font-size: 13.5px; font-weight: 600; padding: 7px 16px; border-radius: 6px; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .segmentado button:hover { color: var(--texto); }
+  .segmentado button[aria-pressed="true"] {
+    background: var(--superficie); color: var(--azul-800); box-shadow: var(--sombra);
+  }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .segmentado button[aria-pressed="true"] { color: #9fc6f0; }
+
+  .selo-data {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; color: var(--texto-medio);
+    background: var(--azul-50); border: 1px solid var(--borda);
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .selo-data strong { color: var(--azul-800); font-variant-numeric: tabular-nums; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .selo-data strong { color: #9fc6f0; }
+
+  .filtros__grade {
+    display: grid;
+    grid-template-columns: minmax(240px, 2.2fr) minmax(180px, 1.4fr) minmax(150px, 1fr) minmax(120px, .8fr) auto;
+    gap: 14px;
+    align-items: end;
+  }
+  .campo { min-width: 0; }
+  .campo > label {
+    display: block; font-size: 13.5px; font-weight: 700; color: var(--texto); margin-bottom: 7px;
+  }
+  .campo__busca { position: relative; }
+  .campo__busca svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--texto-fraco); pointer-events: none;
+  }
+  .campo__busca input { padding-left: 36px; }
+
+  input[type="search"], select {
+    width: 100%; height: 42px; padding: 0 12px;
+    background: var(--superficie); color: var(--texto);
+    border: 1px solid var(--borda-forte); border-radius: var(--raio-sm);
+    font-size: 14px; font-family: inherit;
+    transition: border-color .15s, box-shadow .15s;
+    appearance: none;
+  }
+  input[type="search"]::placeholder { color: #94a3b8; }
+  input[type="search"]:focus, select:focus {
+    outline: none; border-color: var(--azul-700); box-shadow: 0 0 0 3px rgba(26, 95, 168, .16);
+  }
+  select {
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+  }
+  input[type="search"]::-webkit-search-cancel-button { filter: grayscale(1); }
+
+  .acoes { display: flex; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 42px; padding: 0 18px; border-radius: var(--raio-sm);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+    white-space: nowrap;
+  }
+  .btn:focus-visible { outline: 2px solid var(--azul-700); outline-offset: 2px; }
+  .btn--primario { background: var(--azul-800); color: #fff; }
+  .btn--primario:hover { background: var(--azul-900); }
+  .btn--secundario { background: var(--superficie); color: var(--texto); border-color: var(--borda-forte); }
+  .btn--secundario:hover { background: var(--fundo-sutil); }
+  .btn--pequeno { height: 34px; padding: 0 12px; font-size: 13px; }
+  .btn--vinculo {
+    background: transparent; border-color: transparent; color: var(--azul-700);
+    padding: 0 8px; height: 30px; font-size: 13px;
+  }
+  .btn--vinculo:hover { background: var(--azul-50); }
+
+  /* ---------- Indicadores ---------- */
+  .indicadores {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px;
+  }
+  .indicador { padding: 18px 20px; position: relative; overflow: hidden; }
+  .indicador::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--azul-700);
+  }
+  .indicador--alerta::before { background: var(--alerta); }
+  .indicador__rotulo {
+    font-size: 12.5px; font-weight: 600; color: var(--texto-fraco);
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .indicador__valor {
+    font-size: 34px; font-weight: 700; letter-spacing: -.02em; margin-top: 6px;
+    font-variant-numeric: tabular-nums; color: var(--azul-900);
+  }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .indicador__valor { color: #cfe3fa; }
+  .indicador--alerta .indicador__valor { color: var(--alerta); }
+  .indicador__apoio { font-size: 13px; color: var(--texto-medio); margin-top: 4px; }
+
+  /* ---------- Aviso de destaque ---------- */
+  .destaque {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px 20px; margin-top: 16px;
+    background: var(--alerta-fundo); border: 1px solid var(--alerta-borda);
+    border-radius: var(--raio);
+  }
+  .destaque__icone { color: var(--alerta); flex: none; margin-top: 2px; }
+  .destaque__titulo { font-weight: 700; font-size: 15px; }
+  .destaque__texto { font-size: 13.5px; color: var(--texto-medio); margin-top: 3px; }
+  .destaque__acao { margin-left: auto; flex: none; align-self: center; }
+
+  /* ---------- Grade territorial ---------- */
+  .painel { padding: 20px; }
+  .duas-colunas { display: grid; grid-template-columns: 1.9fr 1fr; gap: 16px; align-items: start; }
+
+  .grade-uf {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px;
+  }
+  .uf {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 8px; border-radius: var(--raio-sm); cursor: pointer;
+    border: 1px solid var(--borda); background: var(--fundo-sutil); color: var(--texto);
+    text-align: left; transition: transform .12s, box-shadow .12s, border-color .12s;
+  }
+  .uf:hover { transform: translateY(-1px); box-shadow: var(--sombra-md); }
+  .uf:focus-visible { outline: 2px solid var(--azul-700); outline-offset: 2px; }
+  .uf[aria-pressed="true"] { border-color: var(--azul-800); box-shadow: 0 0 0 2px rgba(26, 95, 168, .25); }
+  .uf__sigla { font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+  .uf__valor { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .uf--n0 { background: var(--fundo-sutil); }
+  .uf--n1 { background: var(--azul-100); border-color: var(--azul-200); }
+  .uf--n2 { background: var(--azul-200); border-color: var(--azul-200); }
+  .uf--n3 { background: var(--azul-700); border-color: var(--azul-700); color: #fff; }
+  .uf--n4 { background: var(--azul-900); border-color: var(--azul-900); color: #fff; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .uf--n1 { color: #dbe9f8; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .uf--n2 { color: #0c141f; }
+
+  .legenda { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; font-size: 12.5px; color: var(--texto-fraco); }
+  .legenda span { display: inline-flex; align-items: center; gap: 6px; }
+  .legenda i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--borda); display: inline-block; }
+
+  .ranking { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .ranking li { display: flex; align-items: center; gap: 12px; }
+  .ranking__pos {
+    flex: none; width: 24px; height: 24px; border-radius: 6px;
+    background: var(--azul-50); color: var(--azul-800);
+    font-size: 12px; font-weight: 700; display: grid; place-items: center;
+  }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .ranking__pos { color: #9fc6f0; }
+  .ranking__nome { font-weight: 600; font-size: 14px; min-width: 34px; }
+  .ranking__barra { flex: 1; height: 8px; background: var(--fundo-sutil); border-radius: 999px; overflow: hidden; }
+  .ranking__barra > span { display: block; height: 100%; background: var(--azul-700); border-radius: 999px; }
+  .ranking__valor { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 46px; text-align: right; }
+
+  /* ---------- Tabela ---------- */
+  .tabela-topo {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 20px; border-bottom: 1px solid var(--borda);
+  }
+  .tabela-topo__info { font-size: 13.5px; color: var(--texto-medio); }
+  .tabela-topo__info strong { color: var(--texto); font-variant-numeric: tabular-nums; }
+  .tabela-topo__acoes { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+  .tabela-rolagem { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    position: sticky; top: 0; z-index: 1;
+    background: var(--fundo-sutil); color: var(--texto-medio);
+    font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    text-align: left; padding: 11px 16px; white-space: nowrap;
+    border-bottom: 1px solid var(--borda);
+  }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid var(--borda); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: var(--azul-50); }
+  .cel-ente { font-weight: 600; }
+  .cel-ente small { display: block; font-weight: 400; font-size: 12px; color: var(--texto-fraco); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .col-acao { width: 1%; white-space: nowrap; }
+
+  .pilula {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 600; white-space: nowrap;
+    border: 1px solid var(--neutro-borda); background: var(--neutro-fundo); color: var(--neutro);
+  }
+  .pilula::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pilula--alerta { background: var(--alerta-fundo); border-color: var(--alerta-borda); color: var(--alerta); }
+  .pilula--vencido { background: var(--alerta-fundo); border-color: var(--alerta-borda); color: var(--alerta); }
+  .pilula--atencao { background: var(--atencao-fundo); border-color: var(--atencao-borda); color: var(--atencao); }
+  .pilula--regular { background: var(--regular-fundo); border-color: var(--regular-borda); color: var(--regular); }
+
+  .contador-alertas {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 30px; height: 24px; padding: 0 8px; border-radius: 6px;
+    font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+    background: var(--neutro-fundo); color: var(--texto-medio); border: 1px solid var(--borda);
+  }
+  .contador-alertas--alto { background: var(--alerta-fundo); border-color: var(--alerta-borda); color: var(--alerta); }
+
+  /* ---------- Estado vazio ---------- */
+  .vazio { padding: 72px 24px; text-align: center; }
+  .vazio__circulo {
+    width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 20px;
+    background: var(--fundo-sutil); display: grid; place-items: center; color: var(--texto-fraco);
+  }
+  .vazio__titulo { font-size: 19px; font-weight: 700; }
+  .vazio__texto { font-size: 14.5px; color: var(--texto-fraco); margin-top: 6px; max-width: 420px; margin-inline: auto; }
+
+  /* ---------- Paginação ---------- */
+  .paginacao {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 14px 20px; border-top: 1px solid var(--borda);
+  }
+  .paginacao__info { font-size: 13px; color: var(--texto-fraco); }
+  .paginacao__controles { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .paginacao__pagina { font-size: 13.5px; color: var(--texto-medio); font-variant-numeric: tabular-nums; }
+  .btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+  /* ---------- Detalhe do ente ---------- */
+  .fundo-modal {
+    position: fixed; inset: 0; background: rgba(11, 32, 55, .55);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 20px; overflow-y: auto; z-index: 50;
+  }
+  .fundo-modal[hidden] { display: none; }
+  .modal {
+    width: min(880px, 100%); background: var(--superficie);
+    border: 1px solid var(--borda); border-radius: 12px; box-shadow: var(--sombra-lg);
+  }
+  .modal__topo {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 24px; border-bottom: 1px solid var(--borda);
+  }
+  .modal__titulo { font-size: 20px; font-weight: 700; }
+  .modal__meta { font-size: 13px; color: var(--texto-fraco); margin-top: 4px; }
+  .modal__fechar {
+    margin-left: auto; flex: none; width: 34px; height: 34px; border-radius: var(--raio-sm);
+    border: 1px solid var(--borda); background: var(--superficie); color: var(--texto-medio); cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .modal__fechar:hover { background: var(--fundo-sutil); }
+  .modal__corpo { padding: 20px 24px 24px; }
+  .destaques-saude { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+  .destaque-item {
+    padding: 14px 16px; border: 1px solid var(--borda); border-radius: var(--raio); background: var(--azul-50);
+  }
+  .destaque-item__codigo { font-size: 12px; font-weight: 700; color: var(--azul-700); letter-spacing: .04em; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .destaque-item__codigo { color: #9fc6f0; }
+  .destaque-item__nome { font-size: 13.5px; color: var(--texto-medio); margin: 3px 0 9px; }
+  .lista-itens { display: flex; flex-direction: column; }
+  .lista-itens__linha {
+    display: grid; grid-template-columns: 62px 1fr auto; gap: 14px; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--borda);
+  }
+  .lista-itens__linha:last-child { border-bottom: 0; }
+  .lista-itens__codigo { font-size: 13px; font-weight: 700; color: var(--azul-800); font-variant-numeric: tabular-nums; }
+  html:is([data-tema="escuro"], [data-theme="dark"]) .lista-itens__codigo { color: #9fc6f0; }
+  .lista-itens__nome { font-size: 13.5px; color: var(--texto-medio); }
+  .lista-itens__linha--saude { background: var(--azul-50); margin: 0 -12px; padding: 10px 12px; border-radius: 6px; }
+
+  /* ---------- Rodapé ---------- */
+  .rodape {
+    border-top: 1px solid var(--borda); background: var(--superficie);
+    padding: 22px 0; margin-top: 40px;
+  }
+  .rodape__texto { font-size: 13px; color: var(--texto-fraco); text-align: center; }
+  .rodape__texto + .rodape__texto { margin-top: 6px; }
+  .rodape a { color: var(--azul-700); }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 1100px) {
+    .filtros__grade { grid-template-columns: 1fr 1fr; }
+    .filtros__grade .acoes { grid-column: 1 / -1; }
+    .indicadores { grid-template-columns: repeat(2, 1fr); }
+    .duas-colunas { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .container { padding: 0 16px; }
+    .filtros__grade { grid-template-columns: 1fr; }
+    .indicadores { grid-template-columns: 1fr; }
+    .topo__subtitulo { display: none; }
+    .selo-data { margin-left: 0; }
+    .destaque { flex-wrap: wrap; }
+    .destaque__acao { margin-left: 0; }
+    .destaques-saude { grid-template-columns: 1fr; }
+    .lista-itens__linha { grid-template-columns: 54px 1fr; }
+    .lista-itens__linha > :last-child { grid-column: 2; justify-self: start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="container topo__interno">
+    <div class="topo__marca">
+      <svg class="topo__icone" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 21h18" />
+        <path d="M5 21V8l7-4 7 4v13" />
+        <path d="M10 21v-5h4v5" />
+        <path d="M9 11h1.5M13.5 11H15" />
+      </svg>
+      <div>
+        <h1 class="topo__titulo">Monitor CAUC Saúde</h1>
+        <p class="topo__subtitulo">Cadastro Único de Convênios — requisitos fiscais com foco em saúde</p>
+      </div>
+    </div>
+    <div class="topo__acoes">
+      <button class="topo__botao" id="btn-tema" type="button" aria-label="Alternar tema claro e escuro" title="Alternar tema">
+        <svg class="icone-lua" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+        <svg class="icone-sol" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- Filtros -->
+    <section class="cartao filtros" aria-label="Filtros da consulta">
+      <div class="filtros__topo">
+        <div class="segmentado" role="group" aria-label="Tipo de ente">
+          <button type="button" id="aba-municipios" data-base="municipios" aria-pressed="true">Municípios</button>
+          <button type="button" id="aba-estados" data-base="estados" aria-pressed="false">Estados e DF</button>
+        </div>
+        <div class="selo-data">Posição da base <strong id="data-base">—</strong></div>
+      </div>
+
+      <div class="filtros__grade">
+        <div class="campo">
+          <label for="busca">Ente federado (nome, UF, código IBGE ou SIAFI)</label>
+          <div class="campo__busca">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+            </svg>
+            <input type="search" id="busca" placeholder="Ex.: São Paulo ou 355030" autocomplete="off" />
+          </div>
+        </div>
+        <div class="campo">
+          <label for="item">Item do CAUC</label>
+          <select id="item"></select>
+        </div>
+        <div class="campo">
+          <label for="situacao">Situação</label>
+          <select id="situacao">
+            <option value="todas">Todas</option>
+            <option value="alerta">Alerta</option>
+            <option value="atencao">Vence em até 30 dias</option>
+            <option value="regular">Regular</option>
+            <option value="desabilitado">Desabilitado</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="uf">UF</label>
+          <select id="uf"></select>
+        </div>
+        <div class="acoes">
+          <button class="btn btn--primario" type="button" id="btn-consultar">Consultar</button>
+          <button class="btn btn--secundario" type="button" id="btn-limpar">Limpar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panorama de saúde -->
+    <section class="secao" aria-labelledby="titulo-panorama">
+      <div class="secao__cabecalho">
+        <p class="secao__olho">Posição atual</p>
+        <h2 class="secao__titulo" id="titulo-panorama">Saúde em foco</h2>
+        <p class="secao__apoio">Itens 3.2.4 (Anexo 12 do RREO ao Siops) e 5.2 (aplicação mínima de recursos em saúde).</p>
+      </div>
+
+      <div class="indicadores" id="indicadores"></div>
+      <div id="destaques"></div>
+    </section>
+
+    <!-- Distribuição territorial -->
+    <section class="secao" aria-labelledby="titulo-territorio">
+      <div class="secao__cabecalho">
+        <p class="secao__olho">Distribuição territorial</p>
+        <h2 class="secao__titulo" id="titulo-territorio">Alertas de saúde por unidade da federação</h2>
+        <p class="secao__apoio" id="apoio-territorio">Selecione uma UF para filtrar a consulta detalhada.</p>
+      </div>
+      <div class="duas-colunas">
+        <div class="cartao painel">
+          <div class="grade-uf" id="grade-uf"></div>
+          <div class="legenda" id="legenda-uf"></div>
+        </div>
+        <div class="cartao painel">
+          <h3 class="secao__titulo" style="font-size:15px;margin-bottom:14px;" id="titulo-ranking">Maiores volumes</h3>
+          <ol class="ranking" id="ranking"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consulta detalhada -->
+    <section class="secao" aria-labelledby="titulo-consulta">
+      <div class="secao__cabecalho">
+        <p class="secao__olho">Consulta detalhada</p>
+        <h2 class="secao__titulo" id="titulo-consulta">Situação por ente federado</h2>
+        <p class="secao__apoio" id="apoio-item">—</p>
+      </div>
+
+      <div class="cartao">
+        <div class="tabela-topo">
+          <p class="tabela-topo__info" id="resumo-resultado" aria-live="polite">—</p>
+          <div class="tabela-topo__acoes">
+            <button class="btn btn--secundario btn--pequeno" type="button" id="btn-exportar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v12" /><path d="m7 11 5 5 5-5" /><path d="M4 21h16" />
+              </svg>
+              Exportar CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="tabela-rolagem">
+          <table id="tabela">
+            <thead><tr id="cabecalho-tabela"></tr></thead>
+            <tbody id="corpo-tabela"></tbody>
+          </table>
+        </div>
+
+        <div class="vazio" id="estado-vazio" hidden>
+          <div class="vazio__circulo">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+            </svg>
+          </div>
+          <p class="vazio__titulo">Nenhum ente encontrado</p>
+          <p class="vazio__texto">Ajuste o termo de busca, o item do CAUC ou a situação para ver resultados.</p>
+        </div>
+
+        <div class="paginacao" id="paginacao"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="container">
+    <p class="rodape__texto" id="rodape-fonte">Dados obtidos da base pública do CAUC — Tesouro Nacional</p>
+    <p class="rodape__texto">Consulta gerencial baseada na posição atual dos dados abertos. Não substitui o extrato diário oficial do CAUC emitido pelo Tesouro Nacional.</p>
+  </div>
+</footer>
+
+<div class="fundo-modal" id="modal-fundo" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal__topo">
+      <div>
+        <h2 class="modal__titulo" id="modal-titulo">—</h2>
+        <p class="modal__meta" id="modal-meta">—</p>
+      </div>
+      <button class="modal__fechar" type="button" id="modal-fechar" aria-label="Fechar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="modal__corpo">
+      <div class="destaques-saude" id="modal-saude"></div>
+      <div class="lista-itens" id="modal-itens"></div>
+    </div>
+  </div>
+</div>
+
+<script src="dados-cauc.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var D = window.CAUC_DADOS;
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var ITENS_SAUDE = ["3.2.4", "5.2"];
+
+  var nf = new Intl.NumberFormat("pt-BR");
+
+  var SITUACOES = {
+    alerta:       { rotulo: "Alerta",        classe: "pilula--alerta" },
+    vencido:      { rotulo: "Vencido",       classe: "pilula--vencido" },
+    atencao:      { rotulo: "Vence em 30d",  classe: "pilula--atencao" },
+    regular:      { rotulo: "Regular",       classe: "pilula--regular" },
+    desabilitado: { rotulo: "Desabilitado",  classe: "" },
+    sem_info:     { rotulo: "Sem informação", classe: "" }
+  };
+
+  // ---------------------------------------------------------------- dados
+  function paraData(texto) {
+    // "dd/mm/aa" ou "dd/mm/aaaa"
+    var p = /^(\d{2})\/(\d{2})\/(\d{2,4})$/.exec(texto);
+    if (!p) return null;
+    var ano = Number(p[3]);
+    if (ano < 100) ano += 2000;
+    return new Date(ano, Number(p[2]) - 1, Number(p[1]));
+  }
+
+  function classificar(valor, referencia) {
+    if (valor === "" || valor == null) return "sem_info";
+    if (valor === "!") return "alerta";
+    if (valor === "Desabilitado") return "desabilitado";
+    var d = paraData(valor);
+    if (!d) return "sem_info";
+    var dias = Math.round((d - referencia) / 86400000);
+    if (dias < 0) return "vencido";
+    if (dias > 0 && dias <= 30) return "atencao";
+    return "regular";
+  }
+
+  function normalizar(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  function prepararBase(bruta) {
+    var referencia = paraData(bruta.dataPesquisa) || new Date();
+    var itens = bruta.itens;
+    var dic = bruta.dicionario;
+
+    var entes = bruta.entes.map(function (linha, indice) {
+      var codificado = linha[6];
+      var valores = new Array(itens.length);
+      var situacoes = new Array(itens.length);
+      var alertas = 0;
+      for (var i = 0; i < itens.length; i++) {
+        var pos = B64.indexOf(codificado[i * 2]) * 64 + B64.indexOf(codificado[i * 2 + 1]);
+        var valor = dic[pos];
+        var sit = classificar(valor, referencia);
+        valores[i] = valor;
+        situacoes[i] = sit;
+        if (sit === "alerta" || sit === "vencido") alertas++;
+      }
+      return {
+        indice: indice,
+        uf: linha[0],
+        nome: linha[1],
+        ibge: linha[2],
+        siafi: linha[3],
+        regiao: linha[4],
+        populacao: linha[5],
+        valores: valores,
+        situacoes: situacoes,
+        alertas: alertas,
+        busca: normalizar(linha[1]) + " " + linha[0].toLowerCase() + " " + linha[2] + " " + linha[3].toLowerCase()
+      };
+    });
+
+    var posicaoItem = {};
+    itens.forEach(function (codigo, i) { posicaoItem[codigo] = i; });
+
+    return {
+      dataPesquisa: bruta.dataPesquisa,
+      referencia: referencia,
+      itens: itens,
+      posicaoItem: posicaoItem,
+      entes: entes,
+      ufs: Array.from(new Set(entes.map(function (e) { return e.uf; }))).sort()
+    };
+  }
+
+  var BASES = {
+    municipios: prepararBase(D.municipios),
+    estados: prepararBase(D.estados)
+  };
+
+  function ehAlerta(sit) { return sit === "alerta" || sit === "vencido"; }
+
+  // ---------------------------------------------------------------- estado
+  var estado = {
+    base: "municipios",
+    busca: "",
+    item: "3.2.4",
+    situacao: "todas",
+    uf: "",
+    pagina: 1,
+    porPagina: 25
+  };
+
+  var el = {};
+  ["btn-tema", "aba-municipios", "aba-estados", "data-base", "busca", "item", "situacao", "uf",
+   "btn-consultar", "btn-limpar", "indicadores", "destaques", "grade-uf", "legenda-uf", "ranking",
+   "titulo-ranking", "apoio-territorio", "apoio-item", "resumo-resultado", "btn-exportar",
+   "cabecalho-tabela", "corpo-tabela", "estado-vazio", "paginacao", "rodape-fonte",
+   "modal-fundo", "modal-titulo", "modal-meta", "modal-saude", "modal-itens", "modal-fechar"]
+    .forEach(function (id) { el[id] = document.getElementById(id); });
+
+  function baseAtual() { return BASES[estado.base]; }
+  function rotuloItem(codigo) { return codigo + " — " + (D.itens[codigo] || ""); }
+
+  // ---------------------------------------------------------------- filtros
+  function filtrar() {
+    var base = baseAtual();
+    var pos = base.posicaoItem[estado.item];
+    var termo = normalizar(estado.busca.trim());
+    return base.entes.filter(function (e) {
+      if (estado.uf && e.uf !== estado.uf) return false;
+      if (termo && e.busca.indexOf(termo) === -1) return false;
+      if (estado.situacao !== "todas") {
+        if (pos == null) return false;
+        var sit = e.situacoes[pos];
+        if (estado.situacao === "alerta" && !ehAlerta(sit)) return false;
+        if (estado.situacao === "atencao" && sit !== "atencao") return false;
+        if (estado.situacao === "regular" && sit !== "regular") return false;
+        if (estado.situacao === "desabilitado" && sit !== "desabilitado") return false;
+      }
+      return true;
+    });
+  }
+
+  // ---------------------------------------------------------------- render
+  function pilula(situacao, valor) {
+    var cfg = SITUACOES[situacao] || SITUACOES.sem_info;
+    var titulo = valor && valor !== "!" && valor !== "Desabilitado" ? "Validade: " + valor : cfg.rotulo;
+    return '<span class="pilula ' + cfg.classe + '" title="' + titulo + '">' + cfg.rotulo + "</span>";
+  }
+
+  /** O CAUC desabilita itens que não se aplicam ao tipo de ente (ex.: 3.2.4 nos estados). */
+  function itemDesabilitado(base, codigo) {
+    var pos = base.posicaoItem[codigo];
+    if (pos == null) return true;
+    return base.entes.every(function (e) { return e.situacoes[pos] === "desabilitado"; });
+  }
+
+  function cartaoItem(codigo, rotulo, alertas, apoio) {
+    var base = baseAtual();
+    if (itemDesabilitado(base, codigo)) {
+      return { rotulo: rotulo, valor: null, apoio: "item desabilitado nesta base pelo CAUC", alerta: false };
+    }
+    return { rotulo: rotulo, valor: alertas, apoio: apoio, alerta: alertas > 0 };
+  }
+
+  function renderIndicadores() {
+    var base = baseAtual();
+    var total = base.entes.length;
+    var posSiops = base.posicaoItem["3.2.4"];
+    var posMinimo = base.posicaoItem["5.2"];
+
+    var alertasSiops = 0, alertasMinimo = 0, ufsComAlerta = {};
+    base.entes.forEach(function (e) {
+      var a1 = posSiops != null && ehAlerta(e.situacoes[posSiops]);
+      var a2 = posMinimo != null && ehAlerta(e.situacoes[posMinimo]);
+      if (a1) alertasSiops++;
+      if (a2) alertasMinimo++;
+      if (a1 || a2) ufsComAlerta[e.uf] = true;
+    });
+
+    var rotuloEnte = estado.base === "municipios" ? "municípios monitorados" : "entes monitorados";
+    var cartoes = [
+      { rotulo: "Entes na base", valor: total, apoio: rotuloEnte, alerta: false },
+      cartaoItem("3.2.4", "Item 3.2.4 — Siops", alertasSiops, "entes com alerta no Anexo 12 do RREO"),
+      cartaoItem("5.2", "Item 5.2 — mínimo em saúde", alertasMinimo, "entes com alerta na aplicação mínima"),
+      { rotulo: "UFs afetadas", valor: Object.keys(ufsComAlerta).length, apoio: "com alerta em ao menos um item de saúde", alerta: false }
+    ];
+
+    el["indicadores"].innerHTML = cartoes.map(function (c) {
+      return '<div class="cartao indicador' + (c.alerta ? " indicador--alerta" : "") + '">' +
+        '<p class="indicador__rotulo">' + c.rotulo + "</p>" +
+        '<p class="indicador__valor">' + (c.valor === null ? "—" : nf.format(c.valor)) + "</p>" +
+        '<p class="indicador__apoio">' + c.apoio + "</p></div>";
+    }).join("");
+
+    var avisos = [];
+    if (alertasSiops > 0) {
+      avisos.push({ codigo: "3.2.4", quantidade: alertasSiops, texto: "sem comprovação do encaminhamento do Anexo 12 do RREO ao Siops na posição atual." });
+    }
+    if (alertasMinimo > 0) {
+      avisos.push({ codigo: "5.2", quantidade: alertasMinimo, texto: "sem comprovação da aplicação mínima de recursos em saúde na posição atual." });
+    }
+
+    el["destaques"].innerHTML = avisos.map(function (a) {
+      return '<div class="destaque">' +
+        '<svg class="destaque__icone" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
+        "<div><p class=\"destaque__titulo\">Atenção ao item " + a.codigo + " — " + (D.apelidos[a.codigo] || "") + "</p>" +
+        '<p class="destaque__texto">' + nf.format(a.quantidade) + " entes " + a.texto + "</p></div>" +
+        '<div class="destaque__acao"><button class="btn btn--secundario btn--pequeno" type="button" data-ver-alerta="' + a.codigo + '">Ver entes com alerta</button></div>' +
+        "</div>";
+    }).join("");
+  }
+
+  function renderTerritorio() {
+    var base = baseAtual();
+    var posSiops = base.posicaoItem["3.2.4"];
+    var posMinimo = base.posicaoItem["5.2"];
+
+    var porUf = {};
+    base.ufs.forEach(function (uf) { porUf[uf] = 0; });
+    base.entes.forEach(function (e) {
+      var a1 = posSiops != null && ehAlerta(e.situacoes[posSiops]);
+      var a2 = posMinimo != null && ehAlerta(e.situacoes[posMinimo]);
+      if (a1 || a2) porUf[e.uf]++;
+    });
+
+    var maximo = Math.max.apply(null, base.ufs.map(function (uf) { return porUf[uf]; }).concat([1]));
+    function nivel(valor) {
+      if (valor === 0) return 0;
+      var r = valor / maximo;
+      if (r <= 0.25) return 1;
+      if (r <= 0.5) return 2;
+      if (r <= 0.75) return 3;
+      return 4;
+    }
+
+    el["apoio-territorio"].textContent = estado.base === "municipios"
+      ? "Municípios com alerta em 3.2.4 ou 5.2. Selecione uma UF para filtrar a consulta detalhada."
+      : "Entes com alerta em 3.2.4 ou 5.2. Selecione uma UF para filtrar a consulta detalhada.";
+
+    el["grade-uf"].innerHTML = base.ufs.map(function (uf) {
+      var v = porUf[uf];
+      return '<button type="button" class="uf uf--n' + nivel(v) + '" data-uf="' + uf + '"' +
+        ' aria-pressed="' + (estado.uf === uf) + '" title="' + uf + ": " + nf.format(v) + ' com alerta">' +
+        '<span class="uf__sigla">' + uf + "</span>" +
+        '<span class="uf__valor">' + nf.format(v) + "</span></button>";
+    }).join("");
+
+    var faixas = [
+      ["Sem alerta", "uf--n0"], ["Baixo", "uf--n1"], ["Médio", "uf--n2"], ["Alto", "uf--n3"], ["Muito alto", "uf--n4"]
+    ];
+    el["legenda-uf"].innerHTML = faixas.map(function (f) {
+      return '<span><i class="' + f[1] + '"></i>' + f[0] + "</span>";
+    }).join("");
+
+    el["titulo-ranking"].textContent = "UFs com mais alertas de saúde";
+
+    var totalAlertas = base.ufs.reduce(function (soma, uf) { return soma + porUf[uf]; }, 0);
+    if (totalAlertas === 0) {
+      el["ranking"].innerHTML =
+        '<li style="display:block"><p class="secao__apoio" style="margin:0">' +
+        "Nenhum ente desta base está com alerta nos itens 3.2.4 ou 5.2 na posição atual." +
+        "</p></li>";
+      return;
+    }
+
+    var ordenadas = base.ufs.slice()
+      .filter(function (uf) { return porUf[uf] > 0; })
+      .sort(function (a, b) { return porUf[b] - porUf[a]; })
+      .slice(0, 8);
+    el["ranking"].innerHTML = ordenadas.map(function (uf, i) {
+      var v = porUf[uf];
+      return "<li><span class=\"ranking__pos\">" + (i + 1) + "</span>" +
+        '<span class="ranking__nome">' + uf + "</span>" +
+        '<span class="ranking__barra"><span style="width:' + (maximo ? (v / maximo) * 100 : 0) + '%"></span></span>' +
+        '<span class="ranking__valor">' + nf.format(v) + "</span></li>";
+    }).join("");
+  }
+
+  function colunasTabela() {
+    var colunas = [
+      { chave: "ente", rotulo: "Ente" },
+      { chave: "uf", rotulo: "UF" },
+      { chave: "populacao", rotulo: "População", classe: "num" },
+      { chave: "item:3.2.4", rotulo: "3.2.4 — Siops" },
+      { chave: "item:5.2", rotulo: "5.2 — Mínimo saúde" }
+    ];
+    if (ITENS_SAUDE.indexOf(estado.item) === -1) {
+      colunas.push({ chave: "item:" + estado.item, rotulo: estado.item + " — item selecionado" });
+    }
+    colunas.push({ chave: "alertas", rotulo: "Alertas CAUC", classe: "num" });
+    colunas.push({ chave: "acao", rotulo: "", classe: "col-acao" });
+    return colunas;
+  }
+
+  function renderTabela(resultado) {
+    var base = baseAtual();
+    var colunas = colunasTabela();
+
+    el["cabecalho-tabela"].innerHTML = colunas.map(function (c) {
+      return "<th" + (c.classe ? ' class="' + c.classe + '"' : "") + ">" + c.rotulo + "</th>";
+    }).join("");
+
+    var totalPaginas = Math.max(1, Math.ceil(resultado.length / estado.porPagina));
+    if (estado.pagina > totalPaginas) estado.pagina = totalPaginas;
+    var inicio = (estado.pagina - 1) * estado.porPagina;
+    var pagina = resultado.slice(inicio, inicio + estado.porPagina);
+
+    el["corpo-tabela"].innerHTML = pagina.map(function (e) {
+      var celulas = colunas.map(function (c) {
+        if (c.chave === "ente") {
+          return '<td class="cel-ente">' + e.nome + "<small>IBGE " + e.ibge + " · SIAFI " + e.siafi + "</small></td>";
+        }
+        if (c.chave === "uf") return "<td>" + e.uf + "</td>";
+        if (c.chave === "populacao") return '<td class="num">' + nf.format(e.populacao) + "</td>";
+        if (c.chave === "alertas") {
+          return '<td class="num"><span class="contador-alertas' + (e.alertas > 0 ? " contador-alertas--alto" : "") + '">' + e.alertas + "</span></td>";
+        }
+        if (c.chave === "acao") {
+          return '<td class="col-acao"><button class="btn btn--vinculo" type="button" data-detalhe="' + e.indice + '">Detalhes</button></td>';
+        }
+        var codigo = c.chave.slice(5);
+        var pos = base.posicaoItem[codigo];
+        if (pos == null) return '<td><span class="pilula">Não se aplica</span></td>';
+        return "<td>" + pilula(e.situacoes[pos], e.valores[pos]) + "</td>";
+      });
+      return "<tr>" + celulas.join("") + "</tr>";
+    }).join("");
+
+    var vazio = resultado.length === 0;
+    el["estado-vazio"].hidden = !vazio;
+    document.getElementById("tabela").style.display = vazio ? "none" : "";
+
+    el["resumo-resultado"].innerHTML = "<strong>" + nf.format(resultado.length) + "</strong> " +
+      (resultado.length === 1 ? "ente encontrado" : "entes encontrados") +
+      " · posição " + base.dataPesquisa;
+
+    el["paginacao"].innerHTML = vazio ? "" :
+      '<span class="paginacao__info">Exibindo ' + nf.format(inicio + 1) + "–" +
+      nf.format(Math.min(inicio + estado.porPagina, resultado.length)) + " de " + nf.format(resultado.length) + "</span>" +
+      '<div class="paginacao__controles">' +
+      '<button class="btn btn--secundario btn--pequeno" type="button" data-pagina="anterior"' + (estado.pagina === 1 ? " disabled" : "") + ">Anterior</button>" +
+      '<span class="paginacao__pagina">Página ' + estado.pagina + " de " + nf.format(totalPaginas) + "</span>" +
+      '<button class="btn btn--secundario btn--pequeno" type="button" data-pagina="proxima"' + (estado.pagina === totalPaginas ? " disabled" : "") + ">Próxima</button>" +
+      "</div>";
+  }
+
+  function renderTudo() {
+    var base = baseAtual();
+    el["data-base"].textContent = base.dataPesquisa;
+    el["apoio-item"].textContent = rotuloItem(estado.item);
+    renderIndicadores();
+    renderTerritorio();
+    renderTabela(filtrar());
+  }
+
+  // ---------------------------------------------------------------- detalhe
+  var focoAnterior = null;
+
+  function abrirDetalhe(indice) {
+    var base = baseAtual();
+    var e = base.entes[indice];
+    if (!e) return;
+
+    focoAnterior = document.activeElement;
+    el["modal-titulo"].textContent = e.nome + " — " + e.uf;
+    el["modal-meta"].textContent = "Código IBGE " + e.ibge + " · Código SIAFI " + e.siafi +
+      " · Região " + e.regiao + " · População " + nf.format(e.populacao) +
+      " · Posição " + base.dataPesquisa;
+
+    el["modal-saude"].innerHTML = ITENS_SAUDE.map(function (codigo) {
+      var pos = base.posicaoItem[codigo];
+      if (pos == null) return "";
+      return '<div class="destaque-item">' +
+        '<p class="destaque-item__codigo">ITEM ' + codigo + "</p>" +
+        '<p class="destaque-item__nome">' + D.itens[codigo] + "</p>" +
+        pilula(e.situacoes[pos], e.valores[pos]) +
+        (e.valores[pos] && e.valores[pos] !== "!" && e.valores[pos] !== "Desabilitado"
+          ? ' <span style="font-size:12.5px;color:var(--texto-fraco)">validade ' + e.valores[pos] + "</span>" : "") +
+        "</div>";
+    }).join("");
+
+    el["modal-itens"].innerHTML = base.itens.map(function (codigo, i) {
+      var saude = ITENS_SAUDE.indexOf(codigo) !== -1;
+      return '<div class="lista-itens__linha' + (saude ? " lista-itens__linha--saude" : "") + '">' +
+        '<span class="lista-itens__codigo">' + codigo + "</span>" +
+        '<span class="lista-itens__nome">' + (D.itens[codigo] || "") + "</span>" +
+        pilula(e.situacoes[i], e.valores[i]) + "</div>";
+    }).join("");
+
+    el["modal-fundo"].hidden = false;
+    document.body.style.overflow = "hidden";
+    el["modal-fechar"].focus();
+  }
+
+  function fecharDetalhe() {
+    el["modal-fundo"].hidden = true;
+    document.body.style.overflow = "";
+    if (focoAnterior && focoAnterior.focus) focoAnterior.focus();
+  }
+
+  // ---------------------------------------------------------------- export
+  function exportarCsv() {
+    var base = baseAtual();
+    var resultado = filtrar();
+    var cabecalho = ["UF", "Ente", "Codigo IBGE", "Codigo SIAFI", "Regiao", "Populacao"]
+      .concat(base.itens.map(function (c) { return c; }))
+      .concat(["Alertas CAUC"]);
+
+    var linhas = resultado.map(function (e) {
+      return [e.uf, e.nome, e.ibge, e.siafi, e.regiao, e.populacao]
+        .concat(e.valores.map(function (v) { return v === "" ? "Sem informacao" : v; }))
+        .concat([e.alertas]);
+    });
+
+    var csv = [cabecalho].concat(linhas).map(function (linha) {
+      return linha.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";");
+    }).join("\r\n");
+
+    var blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "cauc-" + estado.base + "-" + base.dataPesquisa.replace(/\//g, "-") + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------------------------------------------------------------- eventos
+  function preencherSelects() {
+    var base = baseAtual();
+    el["item"].innerHTML = base.itens.map(function (codigo) {
+      return '<option value="' + codigo + '"' + (codigo === estado.item ? " selected" : "") + ">" +
+        codigo + " — " + (D.itens[codigo] || "") + "</option>";
+    }).join("");
+    if (base.posicaoItem[estado.item] == null) {
+      estado.item = base.itens[0];
+      el["item"].value = estado.item;
+    }
+
+    el["uf"].innerHTML = '<option value="">Brasil</option>' + base.ufs.map(function (uf) {
+      return '<option value="' + uf + '"' + (uf === estado.uf ? " selected" : "") + ">" + uf + "</option>";
+    }).join("");
+  }
+
+  function trocarBase(nome) {
+    if (estado.base === nome) return;
+    estado.base = nome;
+    estado.uf = "";
+    estado.pagina = 1;
+    el["aba-municipios"].setAttribute("aria-pressed", String(nome === "municipios"));
+    el["aba-estados"].setAttribute("aria-pressed", String(nome === "estados"));
+    preencherSelects();
+    renderTudo();
+  }
+
+  function irParaTabela() {
+    document.getElementById("titulo-consulta").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  var temporizador = null;
+  el["busca"].addEventListener("input", function () {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(function () {
+      estado.busca = el["busca"].value;
+      estado.pagina = 1;
+      renderTabela(filtrar());
+    }, 180);
+  });
+
+  el["item"].addEventListener("change", function () {
+    estado.item = el["item"].value;
+    estado.pagina = 1;
+    el["apoio-item"].textContent = rotuloItem(estado.item);
+    renderTabela(filtrar());
+  });
+
+  el["situacao"].addEventListener("change", function () {
+    estado.situacao = el["situacao"].value;
+    estado.pagina = 1;
+    renderTabela(filtrar());
+  });
+
+  el["uf"].addEventListener("change", function () {
+    estado.uf = el["uf"].value;
+    estado.pagina = 1;
+    renderTerritorio();
+    renderTabela(filtrar());
+  });
+
+  el["btn-consultar"].addEventListener("click", function () {
+    estado.busca = el["busca"].value;
+    estado.pagina = 1;
+    renderTabela(filtrar());
+    irParaTabela();
+  });
+
+  el["btn-limpar"].addEventListener("click", function () {
+    estado.busca = "";
+    estado.item = "3.2.4";
+    estado.situacao = "todas";
+    estado.uf = "";
+    estado.pagina = 1;
+    el["busca"].value = "";
+    el["situacao"].value = "todas";
+    preencherSelects();
+    renderTudo();
+  });
+
+  el["btn-exportar"].addEventListener("click", exportarCsv);
+
+  el["aba-municipios"].addEventListener("click", function () { trocarBase("municipios"); });
+  el["aba-estados"].addEventListener("click", function () { trocarBase("estados"); });
+
+  el["grade-uf"].addEventListener("click", function (ev) {
+    var botao = ev.target.closest("[data-uf]");
+    if (!botao) return;
+    var uf = botao.getAttribute("data-uf");
+    estado.uf = estado.uf === uf ? "" : uf;
+    estado.pagina = 1;
+    el["uf"].value = estado.uf;
+    renderTerritorio();
+    renderTabela(filtrar());
+    irParaTabela();
+  });
+
+  el["destaques"].addEventListener("click", function (ev) {
+    var botao = ev.target.closest("[data-ver-alerta]");
+    if (!botao) return;
+    estado.item = botao.getAttribute("data-ver-alerta");
+    estado.situacao = "alerta";
+    estado.pagina = 1;
+    el["item"].value = estado.item;
+    el["situacao"].value = "alerta";
+    el["apoio-item"].textContent = rotuloItem(estado.item);
+    renderTabela(filtrar());
+    irParaTabela();
+  });
+
+  el["corpo-tabela"].addEventListener("click", function (ev) {
+    var botao = ev.target.closest("[data-detalhe]");
+    if (botao) abrirDetalhe(Number(botao.getAttribute("data-detalhe")));
+  });
+
+  el["paginacao"].addEventListener("click", function (ev) {
+    var botao = ev.target.closest("[data-pagina]");
+    if (!botao || botao.disabled) return;
+    estado.pagina += botao.getAttribute("data-pagina") === "proxima" ? 1 : -1;
+    renderTabela(filtrar());
+    document.getElementById("titulo-consulta").scrollIntoView({ block: "start" });
+  });
+
+  el["modal-fechar"].addEventListener("click", fecharDetalhe);
+  el["modal-fundo"].addEventListener("click", function (ev) {
+    if (ev.target === el["modal-fundo"]) fecharDetalhe();
+  });
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && !el["modal-fundo"].hidden) fecharDetalhe();
+  });
+
+  // tema
+  var TEMA_CHAVE = "monitor-cauc-tema";
+  var temaSalvo = null;
+  try { temaSalvo = localStorage.getItem(TEMA_CHAVE); } catch (erro) { temaSalvo = null; }
+  if (temaSalvo) document.documentElement.setAttribute("data-tema", temaSalvo);
+  else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.setAttribute("data-tema", "escuro");
+  }
+  el["btn-tema"].addEventListener("click", function () {
+    var novo = document.documentElement.getAttribute("data-tema") === "escuro" ? "claro" : "escuro";
+    document.documentElement.setAttribute("data-tema", novo);
+    try { localStorage.setItem(TEMA_CHAVE, novo); } catch (erro) { /* sem persistência */ }
+  });
+
+  // Se a página estiver embarcada num ambiente que controla o tema por
+  // "data-theme" (portais, visualizadores), acompanha essa preferência.
+  (function acompanharTemaExterno() {
+    var raiz = document.documentElement;
+    function sincronizar() {
+      var externo = raiz.getAttribute("data-theme");
+      if (!externo) return;
+      raiz.setAttribute("data-tema", externo === "dark" ? "escuro" : "claro");
+    }
+    sincronizar();
+    new MutationObserver(sincronizar).observe(raiz, { attributeFilter: ["data-theme"] });
+  })();
+
+  // rodapé
+  el["rodape-fonte"].innerHTML =
+    'Dados obtidos da base pública do CAUC — <a href="' + D.fonte.catalogo + '" target="_blank" rel="noopener">Tesouro Nacional</a>' +
+    " · posição dos municípios em " + D.municipios.dataPesquisa +
+    " · posição dos estados e do DF em " + D.estados.dataPesquisa;
+
+  preencherSelects();
+  renderTudo();
+})();
+</script>
+</body>
+</html>
