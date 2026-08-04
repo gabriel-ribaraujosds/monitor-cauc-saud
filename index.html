@@ -197,6 +197,14 @@
   .selo-data strong { color: var(--azul-800); font-variant-numeric: tabular-nums; }
   html:is([data-tema="escuro"], [data-theme="dark"]) .selo-data strong { color: #9fc6f0; }
 
+  .aviso-base {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--borda);
+    font-size: 13px; color: var(--texto-fraco); line-height: 1.5;
+  }
+  .aviso-base svg { flex: none; margin-top: 2px; color: var(--azul-700); }
+  .aviso-base strong { color: var(--texto-medio); font-weight: 700; }
+
   .filtros__grade {
     display: grid;
     grid-template-columns: minmax(240px, 2.2fr) minmax(180px, 1.4fr) minmax(150px, 1fr) minmax(120px, .8fr) auto;
@@ -543,6 +551,8 @@
           <button class="btn btn--secundario" type="button" id="btn-limpar">Limpar</button>
         </div>
       </div>
+
+      <div class="aviso-base" id="aviso-base"></div>
     </section>
 
     <!-- Panorama de saúde -->
@@ -759,7 +769,7 @@
 
   var el = {};
   ["btn-tema", "aba-municipios", "aba-estados", "data-base", "busca", "item", "situacao", "uf",
-   "btn-consultar", "btn-limpar", "indicadores", "destaques", "grade-uf", "legenda-uf", "ranking",
+   "btn-consultar", "btn-limpar", "aviso-base", "indicadores", "destaques", "grade-uf", "legenda-uf", "ranking",
    "titulo-ranking", "apoio-territorio", "apoio-item", "resumo-resultado", "btn-exportar",
    "cabecalho-tabela", "corpo-tabela", "estado-vazio", "paginacao", "rodape-fonte",
    "modal-fundo", "modal-titulo", "modal-meta", "modal-saude", "modal-itens", "modal-fechar"]
@@ -993,10 +1003,38 @@
       "</div>";
   }
 
+  /**
+   * O CAUC extrai a posição na manhã de cada dia útil. O que for homologado
+   * depois da extração só aparece na atualização seguinte — é o efeito D-1 que
+   * o aviso precisa deixar explícito.
+   */
+  function renderAviso() {
+    var base = baseAtual();
+    var hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    var diasAtras = Math.round((hoje - base.referencia) / 86400000);
+
+    var texto;
+    if (diasAtras > 7) {
+      texto = "<strong>Posição mais recente disponível.</strong> O Tesouro Nacional publicou esta base em " +
+        base.dataPesquisa + " e ainda não divulgou posição mais nova para estados e DF.";
+    } else {
+      texto = "<strong>Atualização diária (D-1).</strong> O painel mostra a posição extraída pelo CAUC na " +
+        "manhã de " + base.dataPesquisa + ". Uma homologação registrada hoje aparece aqui somente na " +
+        "atualização de amanhã.";
+    }
+
+    el["aviso-base"].innerHTML =
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><p style="margin:0">' + texto + "</p>";
+  }
+
   function renderTudo() {
     var base = baseAtual();
     el["data-base"].textContent = base.dataPesquisa;
     el["apoio-item"].textContent = rotuloItem(estado.item);
+    renderAviso();
     renderIndicadores();
     renderTerritorio();
     renderTabela(filtrar());
