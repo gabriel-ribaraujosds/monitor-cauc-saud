@@ -1016,12 +1016,12 @@
 
     var texto;
     if (diasAtras > 7) {
-      texto = "<strong>Posição mais recente disponível.</strong> O Tesouro Nacional publicou esta base em " +
-        base.dataPesquisa + " e ainda não divulgou posição mais nova para estados e DF.";
+      texto = "<strong>Posição mais recente disponível.</strong> Extração de " + base.dataPesquisa +
+        ", última divulgada pela Secretaria do Tesouro Nacional para estados e Distrito Federal.";
     } else {
-      texto = "<strong>Atualização diária (D-1).</strong> O painel mostra a posição extraída pelo CAUC na " +
-        "manhã de " + base.dataPesquisa + ". Uma homologação registrada hoje aparece aqui somente na " +
-        "atualização de amanhã.";
+      texto = "<strong>Defasagem D-1.</strong> Os dados correspondem à extração do CAUC realizada na manhã " +
+        "de " + base.dataPesquisa + ". Homologações processadas após a extração são incorporadas na " +
+        "atualização subsequente.";
     }
 
     el["aviso-base"].innerHTML =
