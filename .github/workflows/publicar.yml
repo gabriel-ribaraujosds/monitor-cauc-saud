@@ -33,8 +33,21 @@ jobs:
         with:
           node-version: "22"
 
+      # O portal do Tesouro pode recusar ou não responder à requisição vinda do
+      # runner. Nesse caso a publicação segue com a última base registrada no
+      # repositório, em vez de derrubar o site inteiro.
       - name: Baixar a posição mais recente do CAUC
+        id: base
+        continue-on-error: true
         run: node atualizar-dados.mjs
+
+      - name: Conferir a base a publicar
+        run: |
+          if [ "${{ steps.base.outcome }}" != "success" ]; then
+            echo "::warning::Download do Tesouro falhou nesta execução — publicando a última base registrada no repositório."
+          fi
+          test -f dados-cauc.js || { echo "::error::dados-cauc.js não existe e o download falhou."; exit 1; }
+          node -e "global.window={};require('./dados-cauc.js');const d=window.CAUC_DADOS;console.log('Posição a publicar — municípios: '+d.municipios.dataPesquisa+' ('+d.municipios.entes.length+' entes) | estados e DF: '+d.estados.dataPesquisa)"
 
       - name: Gerar a versão de arquivo único
         run: node gerar-versao-unica.mjs

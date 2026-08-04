@@ -139,15 +139,54 @@ function compactar({ dataPesquisa, colunas, registros }) {
   return { dataPesquisa, itens, dicionario, entes: linhas };
 }
 
-async function baixar(url) {
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`HTTP ${resp.status} em ${url}`);
+/**
+ * O portal do Tesouro fica atrás de um WAF que responde mal a clientes sem
+ * cabeçalhos de navegador e sofre quedas curtas. Daí o User-Agent explícito,
+ * as tentativas repetidas e o diagnóstico detalhado em caso de falha.
+ */
+const CABECALHOS = {
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36',
+  Accept: '*/*',
+  'Accept-Language': 'pt-BR,pt;q=0.9',
+};
+
+const TENTATIVAS = 4;
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function requisitar(url, descricao) {
+  let ultimoErro;
+  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
+    try {
+      const resp = await fetch(url, {
+        headers: CABECALHOS,
+        signal: AbortSignal.timeout(120000),
+      });
+      if (!resp.ok) {
+        const amostra = (await resp.text()).slice(0, 300).replace(/\s+/g, ' ');
+        throw new Error(`HTTP ${resp.status} ${resp.statusText} — resposta: ${amostra}`);
+      }
+      return resp;
+    } catch (erro) {
+      ultimoErro = erro;
+      const causa = erro.cause ? ` (causa: ${erro.cause.code || erro.cause.message})` : '';
+      process.stdout.write(
+        `  tentativa ${tentativa}/${TENTATIVAS} falhou em ${descricao}: ${erro.message}${causa}\n`
+      );
+      if (tentativa < TENTATIVAS) await espera(tentativa * 5000);
+    }
+  }
+  throw new Error(`${descricao}: ${ultimoErro.message}\n  URL: ${url}`);
+}
+
+async function baixar(url, descricao) {
+  const resp = await requisitar(url, descricao);
   return decodificar(await resp.arrayBuffer());
 }
 
 async function main() {
   process.stdout.write('Consultando o catálogo do Tesouro Nacional…\n');
-  const pacote = await (await fetch(CKAN)).json();
+  const pacote = await (await requisitar(CKAN, 'catálogo CKAN')).json();
   if (!pacote.success) throw new Error('CKAN não retornou o conjunto "cauc".');
 
   const recursos = pacote.result.resources.filter((r) => (r.format || '').toUpperCase() === 'CSV');
@@ -161,9 +200,9 @@ async function main() {
   if (!recMun || !recEst) throw new Error('Recursos CSV de municípios/estados não localizados.');
 
   process.stdout.write('Baixando a posição dos municípios…\n');
-  const municipios = compactar(parsearCsv(await baixar(recMun.url)));
+  const municipios = compactar(parsearCsv(await baixar(recMun.url, 'CSV dos municípios')));
   process.stdout.write('Baixando a posição dos estados e do DF…\n');
-  const estados = compactar(parsearCsv(await baixar(recEst.url)));
+  const estados = compactar(parsearCsv(await baixar(recEst.url, 'CSV dos estados e DF')));
 
   const dados = {
     geradoEm: new Date().toISOString(),
