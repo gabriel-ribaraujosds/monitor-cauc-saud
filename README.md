@@ -1,5 +1,7 @@
 # Monitor CAUC Saúde
 
+**No ar:** <https://gabriel-ribaraujosds.github.io/monitor-cauc-saud/>
+
 Consulta pública da posição atual dos requisitos do CAUC (Cadastro Único de Convênios),
 com destaque para os itens de saúde:
 
