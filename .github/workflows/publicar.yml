@@ -44,6 +44,9 @@ jobs:
       # última posição conhecida; e o repositório se mantém ativo, evitando que
       # o GitHub desative o agendamento por inatividade.
       - name: Registrar a base no repositório
+        # Se o repositório estiver com token de Actions somente-leitura, este
+        # passo falha — mas a publicação do site não depende dele.
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
