@@ -1,6 +1,11 @@
 # Monitor CAUC Saúde
 
-**No ar:** <https://gabriel-ribaraujosds.github.io/monitor-cauc-saud/>
+**No ar:** <https://monitor-cauc-saude.pages.dev>
+
+Espelho: <https://gabriel-ribaraujosds.github.io/monitor-cauc-saud/> — mesmo
+conteúdo, publicado na mesma execução. A rede do FNS bloqueia a faixa de IPs do
+GitHub Pages (185.199.108–111.x), por isso o endereço de referência é o do
+Cloudflare.
 
 Consulta pública da posição atual dos requisitos do CAUC (Cadastro Único de Convênios),
 com destaque para os itens de saúde:
