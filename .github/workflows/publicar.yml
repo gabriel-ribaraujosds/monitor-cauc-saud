@@ -26,6 +26,12 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.publicacao.outputs.page_url }}
+    # Exposto como env para que o passo do Cloudflare possa se autodesativar
+    # enquanto as credenciais não estiverem cadastradas (o contexto `secrets`
+    # não pode ser usado diretamente num `if:` de passo).
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -75,6 +81,20 @@ jobs:
         run: |
           mkdir -p site
           cp index.html dados-cauc.js monitor-cauc-saude.html site/
+
+      # Destino principal: a rede do FNS bloqueia o range de IPs do GitHub
+      # Pages, mas alcança o Cloudflare normalmente.
+      - name: Publicar no Cloudflare Pages
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site --project-name=monitor-cauc-saude --branch=main
+
+      - name: Avisar que o Cloudflare ainda não está configurado
+        if: env.CLOUDFLARE_API_TOKEN == ''
+        run: echo "::warning::Segredos CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID ausentes — publicando apenas no GitHub Pages."
 
       - uses: actions/configure-pages@v5
         with:
