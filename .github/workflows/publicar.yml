@@ -86,11 +86,12 @@ jobs:
       # Pages, mas alcança o Cloudflare normalmente.
       - name: Publicar no Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != ''
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy site --project-name=monitor-cauc-saude --branch=main
+        run: |
+          # Cria o projeto na primeira execução; nas seguintes já existe.
+          npx --yes wrangler@4 pages project create monitor-cauc-saude \
+            --production-branch=main 2>/dev/null || echo "Projeto Pages já existe — seguindo."
+          npx --yes wrangler@4 pages deploy site \
+            --project-name=monitor-cauc-saude --branch=main
 
       - name: Avisar que o Cloudflare ainda não está configurado
         if: env.CLOUDFLARE_API_TOKEN == ''
