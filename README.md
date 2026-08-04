@@ -29,7 +29,37 @@ Basta servir os arquivos estáticos — não há backend.
 Funciona em qualquer hospedagem estática (GitHub Pages, Netlify, IIS, Apache,
 nginx ou um diretório interno do FNS).
 
-## Atualizar a base
+### Publicação automática no GitHub Pages
+
+O repositório já traz `.github/workflows/publicar.yml`, que faz tudo sozinho:
+
+1. baixa a posição mais recente do CAUC (`atualizar-dados.mjs`);
+2. gera a versão de arquivo único (`gerar-versao-unica.mjs`);
+3. registra a base no repositório quando ela muda;
+4. publica o site no GitHub Pages.
+
+Ele roda **todo dia às 12h30 UTC (09h30 em Brasília)**, a cada alteração no
+código e sob demanda pela aba *Actions*. Para criar o repositório e ligar a
+publicação:
+
+```bash
+git remote add origin https://github.com/SEU-USUARIO/monitor-cauc-saude.git
+git push -u origin main
+```
+
+O repositório precisa ser **público** para o GitHub Pages gratuito. O endereço
+final é `https://SEU-USUARIO.github.io/monitor-cauc-saude/`.
+
+O horário do agendamento acompanha a gravação do arquivo no Tesouro, que ocorre
+por volta das 11h10 UTC. Para mudar, edite o `cron` no workflow — o valor está
+sempre em UTC.
+
+> O GitHub desativa agendamentos em repositórios sem atividade por 60 dias. Como
+> o workflow registra a base sempre que ela muda (o que ocorre semanalmente), o
+> repositório se mantém ativo. Se ainda assim chegar o aviso por e-mail, basta
+> reativar o workflow na aba *Actions*.
+
+## Atualizar a base manualmente
 
 ```bash
 node atualizar-dados.mjs
@@ -41,7 +71,8 @@ O script consulta o catálogo CKAN do Tesouro Nacional
 estados/DF, e regrava a base local.
 
 A base gerencial do CAUC é divulgada **semanalmente** (em geral no primeiro dia
-útil), então rodar o script uma vez por semana mantém o painel em dia.
+útil). A execução diária do workflow não muda essa periodicidade — ela apenas
+garante que a nova posição entre no ar no mesmo dia em que for divulgada.
 
 ### Por que a base fica embutida
 

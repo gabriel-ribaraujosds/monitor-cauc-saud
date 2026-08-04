@@ -1,0 +1,3 @@
+# O workflow roda em Linux: normaliza tudo em LF para que os scripts do
+# publicar.yml não quebrem por causa de fim de linha do Windows.
+* text=auto eol=lf
