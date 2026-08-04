@@ -86,6 +86,7 @@ jobs:
         run: |
           mkdir -p site
           cp index.html dados-cauc.js monitor-cauc-saude.html site/
+          cp favicon-32.png favicon-192.png apple-touch-icon.png site/
 
       # Destino principal: a rede do FNS bloqueia o range de IPs do GitHub
       # Pages, mas alcança o Cloudflare normalmente.
