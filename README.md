@@ -23,6 +23,7 @@ Indicadores Municipais (SIOPS).
 | `index.html` | O site. Todo o CSS e o JavaScript estão embutidos. |
 | `dados-cauc.js` | Base do CAUC compactada, carregada pelo `index.html`. |
 | `atualizar-dados.mjs` | Baixa a posição mais recente do Tesouro e regrava o `dados-cauc.js`. |
+| `verificar-publicacao.mjs` | Compara a posição publicada no site com a da fonte e falha se o site estiver atrás. |
 | `gerar-versao-unica.mjs` | Gera `monitor-cauc-saude.html` com tudo em um arquivo só. |
 | `monitor-cauc-saude.html` | Versão de arquivo único, pronta para publicar. |
 
@@ -62,6 +63,23 @@ O horário acompanha a gravação do arquivo no Tesouro, que ocorre por volta da
 posição da véspera. Para mudar, edite o `cron` no workflow — o valor está
 sempre em UTC, e o GitHub pode atrasar execuções agendadas em alguns minutos
 nos horários de pico.
+
+### Monitoramento da publicação
+
+O workflow `.github/workflows/verificar.yml` roda todo dia às 11h07 (Brasília),
+depois da última janela de publicação, e compara a posição servida pelo site com
+a que o Tesouro divulga naquele momento. Se o site estiver atrás, a execução
+falha e o GitHub avisa por e-mail.
+
+A comparação é feita contra a fonte, não contra o calendário: em fim de semana
+ou feriado, quando o Tesouro não publica, site e fonte seguem iguais e nada é
+reportado. O alarme só existe quando a fonte andou e o site não.
+
+Para conferir manualmente a qualquer momento:
+
+```bash
+node verificar-publicacao.mjs
+```
 
 > O GitHub desativa agendamentos em repositórios sem atividade por 60 dias. Como
 > o workflow registra a base sempre que ela muda (o que ocorre semanalmente), o

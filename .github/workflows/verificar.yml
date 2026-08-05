@@ -1,0 +1,25 @@
+name: Verificar se a publicação está em dia
+
+# Roda depois da última janela de publicação (10h41) e compara o que o site
+# serve com o que o Tesouro divulga. Falha de propósito quando o site fica para
+# trás — a falha é o que dispara o aviso por e-mail do GitHub.
+on:
+  schedule:
+    - cron: "7 14 * * *" # 11h07 em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Comparar a posição publicada com a da fonte
+        run: node verificar-publicacao.mjs
