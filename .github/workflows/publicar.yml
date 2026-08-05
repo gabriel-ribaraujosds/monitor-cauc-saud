@@ -7,9 +7,12 @@ on:
     # buscaria o arquivo antes da divulgação e publicaria a posição da véspera,
     # então a execução principal fica às 11h20 UTC = 08h20 em Brasília.
     - cron: "20 11 * * *"
-    # Rede de segurança: se a divulgação atrasar, esta execução às 12h30 UTC
-    # (09h30 em Brasília) ainda captura a posição do dia.
+    # Redes de segurança. O GitHub trata execuções agendadas como melhor
+    # esforço e pode atrasá-las ou descartá-las em períodos de carga alta, então
+    # há mais duas tentativas no mesmo dia: 09h30 e 10h30 em Brasília. Quando a
+    # base já está atualizada, a execução não gera commit — apenas republica.
     - cron: "30 12 * * *"
+    - cron: "30 13 * * *"
   # Publica também a cada alteração no código do site.
   push:
     branches: [main]
