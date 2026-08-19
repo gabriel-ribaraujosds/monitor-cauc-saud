@@ -205,7 +205,10 @@ async function main() {
   const estados = compactar(parsearCsv(await baixar(recEst.url, 'CSV dos estados e DF')));
 
   const dados = {
-    geradoEm: new Date().toISOString(),
+    // Data sem hora de propósito: com o instante da execução, o arquivo mudava
+    // a cada rodada e gerava um commit por janela de publicação, mesmo sem
+    // alteração alguma na posição divulgada pelo Tesouro.
+    geradoEm: new Date().toISOString().slice(0, 10),
     fonte: {
       nome: 'Tesouro Nacional — dados abertos do CAUC',
       catalogo: 'https://www.tesourotransparente.gov.br/ckan/dataset/cauc',

@@ -84,7 +84,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "Base inalterada — nada a registrar."
           else
-            git commit -m "Atualiza a base do CAUC ($(date -u '+%Y-%m-%d'))"
+            posicao=$(node -e "global.window={};require('./dados-cauc.js');process.stdout.write(window.CAUC_DADOS.municipios.dataPesquisa)")
+            git commit -m "Atualiza a base do CAUC (posição $posicao)"
             git push
           fi
 
