@@ -33,8 +33,21 @@ jobs:
 
       # Publicar antes de enviar o segredo: o comando `secret put` exige que o
       # Worker já exista na conta.
+      # O log completo da execução exige autenticação para ser lido. Publicar a
+      # mensagem de erro como anotação deixa o diagnóstico acessível sem token.
       - name: Publicar o Worker
-        run: npx --yes wrangler@4 deploy
+        run: |
+          set +e
+          saida=$(npx --yes wrangler@4 deploy 2>&1)
+          codigo=$?
+          echo "$saida"
+          if [ $codigo -ne 0 ]; then
+            resumo=$(echo "$saida" \
+              | grep -Ei "error|erro|permission|authenticat|forbidden|unauthorized|code: *[0-9]+" \
+              | head -6 | tr '\n' ' ' | cut -c1-700)
+            echo "::error::wrangler deploy falhou (codigo $codigo): ${resumo:-sem mensagem reconhecida}"
+            exit $codigo
+          fi
 
       - name: Enviar o token do GitHub como segredo do Worker
         if: env.GH_DISPATCH_TOKEN != ''
