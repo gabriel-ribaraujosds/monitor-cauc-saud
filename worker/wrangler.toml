@@ -1,0 +1,16 @@
+name = "monitor-cauc-gatilho"
+main = "gatilho.js"
+compatibility_date = "2026-09-01"
+
+# Sem URL pública: este Worker só roda por cron.
+workers_dev = false
+
+[triggers]
+# 11h20 UTC = 08h20 em Brasília, logo após o Tesouro gravar o arquivo (08h11).
+# A segunda janela cobre uma eventual indisponibilidade da API do GitHub.
+crons = ["20 11 * * *", "20 12 * * *"]
+
+[vars]
+REPOSITORIO = "gabriel-ribaraujosds/monitor-cauc-saud"
+WORKFLOW = "publicar.yml"
+REFERENCIA = "main"

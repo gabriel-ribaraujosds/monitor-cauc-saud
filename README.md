@@ -64,6 +64,28 @@ posição da véspera. Para mudar, edite o `cron` no workflow — o valor está
 sempre em UTC, e o GitHub pode atrasar execuções agendadas em alguns minutos
 nos horários de pico.
 
+### Gatilho no horário (Cloudflare)
+
+O agendador do GitHub atrasa execuções `schedule` — chegou a 5 horas em setembro
+de 2026 — e por isso o disparo no horário fica a cargo de um Worker do
+Cloudflare (`worker/`), cujo Cron Trigger aciona a Action por
+`workflow_dispatch`. Execuções disparadas não passam pela fila de agendamento e
+começam de imediato.
+
+O Worker é publicado pela Action `gatilho.yml`, que reaproveita
+`CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID`. Precisa de um segredo a mais no
+repositório:
+
+| Segredo | O que é |
+| --- | --- |
+| `GH_DISPATCH_TOKEN` | Token do GitHub com permissão *Actions: Read and write* no próprio repositório |
+
+O `CLOUDFLARE_API_TOKEN` precisa incluir *Workers Scripts: Edit* além de
+*Cloudflare Pages: Edit* — sem isso a publicação do Worker falha.
+
+As janelas `schedule` do `publicar.yml` continuam ativas como reserva: quando o
+Worker já atualizou a base, elas rodam e não encontram nada para registrar.
+
 ### Monitoramento da publicação
 
 O workflow `.github/workflows/verificar.yml` roda todo dia às 11h07 (Brasília),

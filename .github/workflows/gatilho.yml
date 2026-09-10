@@ -1,0 +1,45 @@
+name: Publicar o Worker de gatilho
+
+# O Worker é publicado pela própria Action, reaproveitando as credenciais do
+# Cloudflare que já existem no repositório. Assim a única credencial nova é o
+# token do GitHub que o Worker usa para disparar a publicação.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "worker/**"
+      - ".github/workflows/gatilho.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publicar-worker:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GH_DISPATCH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Publicar antes de enviar o segredo: o comando `secret put` exige que o
+      # Worker já exista na conta.
+      - name: Publicar o Worker
+        run: npx --yes wrangler@4 deploy
+
+      - name: Enviar o token do GitHub como segredo do Worker
+        if: env.GH_DISPATCH_TOKEN != ''
+        run: printf '%s' "$GH_DISPATCH_TOKEN" | npx --yes wrangler@4 secret put GITHUB_TOKEN
+
+      - name: Avisar que o token do GitHub ainda não foi cadastrado
+        if: env.GH_DISPATCH_TOKEN == ''
+        run: echo "::warning::Segredo GH_DISPATCH_TOKEN ausente — o Worker foi publicado, mas não conseguirá disparar a publicação até o token ser cadastrado."
