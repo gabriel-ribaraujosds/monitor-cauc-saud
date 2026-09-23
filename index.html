@@ -1014,14 +1014,17 @@
     hoje.setHours(0, 0, 0, 0);
     var diasAtras = Math.round((hoje - base.referencia) / 86400000);
 
+    // Anunciar "D-1" quando a posição é mais antiga que isso faz o painel
+    // parecer defasado por falha própria, quando na verdade a fonte é que não
+    // divulgou. A partir de dois dias o aviso passa a dizer o que ocorre.
     var texto;
-    if (diasAtras > 7) {
-      texto = "<strong>Posição mais recente disponível.</strong> Extração de " + base.dataPesquisa +
-        ", última divulgada pela Secretaria do Tesouro Nacional para estados e Distrito Federal.";
-    } else {
+    if (diasAtras <= 1) {
       texto = "<strong>Atualização D-1.</strong> Os dados correspondem à extração do CAUC realizada na manhã " +
         "de " + base.dataPesquisa + ". Homologações processadas após a extração são incorporadas na " +
         "atualização subsequente.";
+    } else {
+      texto = "<strong>Posição de " + base.dataPesquisa + ".</strong> É a divulgação mais recente da " +
+        "Secretaria do Tesouro Nacional para esta base — não houve publicação posterior até o momento.";
     }
 
     el["aviso-base"].innerHTML =
