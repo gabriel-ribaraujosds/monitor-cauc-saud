@@ -29,7 +29,13 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # Deixar a execução nova substituir a anterior em vez de esperar por ela.
+  # Com `false`, uma execução travada segurava o grupo indefinidamente e cada
+  # nova entrada cancelava a pendente anterior — foi o que paralisou a
+  # publicação por dois dias em outubro de 2026. Cada execução republica o
+  # estado completo, então interromper uma em andamento não deixa nada pela
+  # metade: a seguinte refaz tudo.
+  cancel-in-progress: true
 
 jobs:
   publicar:
